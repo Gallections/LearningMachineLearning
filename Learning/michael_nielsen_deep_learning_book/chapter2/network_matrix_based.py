@@ -1,3 +1,4 @@
+# filepath: d:\Billy's copy\machine_learning\LearningMachineLearning\Learning\michael_nielsen_deep_learning_book\chapter1_\network.py
 # In this implementation, the main goal is to divide the minist data set 
 # into 50, 000 training set + 10, 000 validation set. Alongside with 
 # 10, 000 testing data sets.
@@ -42,7 +43,9 @@ class Network(object):
                 training_data[k: k+mini_batch_size] for k in range(0, n, mini_batch_size)
                 ]
             for mini_batch in mini_batches:
-                self.update_mini_batch(mini_batch, eta)
+                # choose one of two update implementations:
+                # self.update_mini_batch(mini_batch, eta)      # sample-by-sample (original)
+                self.update_mini_batches_matrix_based(mini_batch, eta)  # fully matrix-based
             if test_data:
                 print("Epoch {0}: {1} / {2}".format(
                     j, self.evaluate(test_data), n_test
@@ -73,8 +76,28 @@ class Network(object):
     # self.backprop will be implemented later in the leanring process
 
     def update_mini_batches_matrix_based(self, mini_batch, eta):
-        nabla_b = [np.zeros(b.shape) for b in self.biases]
-        nabla_w = [np.zeros(w.shape) for w in self.weights]
+        """
+        Fully matrix-based mini-batch update.
+        This method stacks the inputs and outputs of the mini-batch into matrices
+        and computes gradients for the whole batch in one pass (vectorized).
+
+        Assumptions:
+        - mini_batch is a list of tuples (x, y) where x has shape (n_in, 1) and y has shape (n_out, 1)
+        - We form X of shape (n_in, m) and Y of shape (n_out, m) where m = len(mini_batch)
+        """
+        if len(mini_batch) == 0:
+            return
+
+        # Stack input and output column vectors horizontally to form matrices
+        X = np.hstack([x if x.ndim == 2 else x.reshape(-1, 1) for x, _ in mini_batch])
+        Y = np.hstack([y if y.ndim == 2 else y.reshape(-1, 1) for _, y in mini_batch])
+
+        nabla_b, nabla_w = self.backprop_matrix(X, Y)
+        m = X.shape[1]
+
+        # Update weights and biases using the averaged gradients over the mini-batch
+        self.weights = [w - (eta / m) * nw for w, nw in zip(self.weights, nabla_w)]
+        self.biases = [b - (eta / m) * nb for b, nb in zip(self.biases, nabla_b)]
 
     def backprop(self, x, y):
         """Return a tuple ``(nabla_b, nabla_w)`` representing the
@@ -108,6 +131,58 @@ class Network(object):
 
         return (nabla_b, nabla_w)
 
+    def backprop_matrix(self, X, Y):
+        """
+        Fully vectorized backpropagation over a mini-batch.
+
+        Pseudocode:
+        1. INPUT: X (n_in x m), Y (n_out x m), weights W_l, biases b_l for layers l=1..L
+        2. FORWARD PASS:
+             A_0 = X
+             for l in 1..L:
+                 Z_l = W_l @ A_{l-1} + b_l  # b_l broadcasts across the m columns
+                 A_l = sigmoid(Z_l)
+        3. BACKWARD PASS:
+             delta_L = (A_L - Y) * sigmoid_prime(Z_L)            # (n_L x m)
+             nabla_b_L = sum_columns(delta_L) -> shape (n_L x 1)
+             nabla_w_L = delta_L @ A_{L-1}.T                     # (n_L x n_{L-1})
+             for l in L-1 down to 1:
+                 delta_l = (W_{l+1}.T @ delta_{l+1}) * sigmoid_prime(Z_l)
+                 nabla_b_l = sum_columns(delta_l)
+                 nabla_w_l = delta_l @ A_{l-1}.T
+        4. RETURN lists [nabla_b_l], [nabla_w_l] for all layers.
+        """
+        # Containers for activations and z vectors (all matrix forms over the batch)
+        activations = [X]  # A_0
+        zs = []
+
+        # Forward pass (matrix form)
+        A = X
+        for b, w in zip(self.biases, self.weights):
+            Z = np.dot(w, A) + b  # b will broadcast across columns
+            zs.append(Z)
+            A = sigmoid(Z)
+            activations.append(A)
+
+        # Backward pass (matrix form)
+        nabla_b = [np.zeros(b.shape) for b in self.biases]
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
+
+        # delta for the output layer
+        delta = (activations[-1] - Y) * sigmoid_prime(zs[-1])  # shape (n_L, m)
+        nabla_b[-1] = np.sum(delta, axis=1, keepdims=True)     # sum across batch -> shape (n_L,1)
+        nabla_w[-1] = np.dot(delta, activations[-2].T)         # shape (n_L, n_{L-1})
+
+        # propagate backwards for remaining layers
+        for l in range(2, self.num_layers):
+            z = zs[-l]
+            sp = sigmoid_prime(z)
+            delta = np.dot(self.weights[-l + 1].T, delta) * sp
+            nabla_b[-l] = np.sum(delta, axis=1, keepdims=True)
+            nabla_w[-l] = np.dot(delta, activations[-l-1].T)
+
+        return (nabla_b, nabla_w)
+
     def evaluate(self, test_data):
         """Return the number of test inputs for which the neural
         network outputs the correct result. Note that the neural
@@ -129,8 +204,9 @@ def sigmoid(z):
     return 1.0 / (1.0 +  np.exp(-z))
 
 def sigmoid_prime(z):
-    """Derivative of the sigmoid function."""
-    return sigmoid(z) * (1 - sigmoid(z))
+    """Derivative of the sigmoid function.""" 
+    s = sigmoid(z)
+    return s * (1 - s)
 
 
 # net = Network([2, 3, 1])
@@ -148,5 +224,3 @@ def sigmoid_prime(z):
 # Understanding the bias matrix:
 # The bias will always have a row for every layer in the network besides the input layer, that means we just need the 
 # number of neurons in layer and make that as our column size.
-
-

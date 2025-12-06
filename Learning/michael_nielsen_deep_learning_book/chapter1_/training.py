@@ -1,11 +1,12 @@
 import network
 import mnist_loader
+import numpy as np
 training_data, validation_data, test_data = \
 mnist_loader.load_data_wrapper()
 
 # Network of three layers, with one hidden layer
-# net = network.Network([784, 30, 10])
-# net.SGD(training_data, 30, 10, 3.0, test_data=test_data)
+net = network.Network([784, 30, 10])
+net.SGD(training_data, 30, 10, 3.0, test_data=test_data)
 
 
 # Network of no hiddne layer, only two layers at a time
@@ -14,5 +15,8 @@ mnist_loader.load_data_wrapper()
 
 
 # Network of 2 hidden layers, so 4 layers in total
-net3 = network.Network([784, 30, 30, 10])
-net3.SGD(training_data, 30, 10, 3.0, test_data=test_data)
+# net3 = network.Network([784, 30, 30, 10])
+# net3.SGD(training_data, 30, 10, 3.0, test_data=test_data)
+
+
+# print(np.random.randn(3, 2))  This returns a 3 x 2 numpy matrix

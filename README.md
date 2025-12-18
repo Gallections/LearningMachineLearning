@@ -6,6 +6,7 @@ The notion of machine learning has been around for a while, yet my exposure to t
 <i>11/07/2025 - To be frank, it is questionalble how far I can advance in this path, but that's what makes a journey interesting, isn't it.</i><br>
 <i>12/05/2025 - That's been a while, but it's interesting to learn how stochastic gradient descent works and how backpropogation is implemented. Tweaking cost functions and regularization does seem to avoid neural saturation and certainly speed up the training speed.</i><br>
 <i>12/06/2025 - To further gain some motivation, I decided to do some relatively simpler tasks by systematically learning some pandas basics</i><br>
+<i>12/17/2025 - Successfully implemented a linear regression model frame scratch! With the foundation of MLP, the concepts are quite straightforward to fathom.</i><br>
 
 # Project Repos:
 ## Starter Kit

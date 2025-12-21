@@ -8,6 +8,8 @@ The notion of machine learning has been around for a while, yet my exposure to t
 <i>12/06/2025 - To further gain some motivation, I decided to do some relatively simpler tasks by systematically learning some pandas basics</i><br>
 <i>12/17/2025 - Successfully implemented a linear regression model frame scratch! With the foundation of MLP, the concepts are quite straightforward to fathom.</i><br>
 <i>12/18/2025 - Today I mainly focused on implementing KNN from scratch as well as looking into the scikit learn version, it is comparatively much easier to understand than Linear Regression.</i><br>
+<i>12/19/2025 - Mainly devlved into the implementation of Logisstic Regression.</i><br>
+<i>12/20/2025 - Today I implemented Kmeans akgorithm </i><br>
 # Project Repos:
 ## Starter Kit
 

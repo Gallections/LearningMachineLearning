@@ -10,6 +10,8 @@ The notion of machine learning has been around for a while, yet my exposure to t
 <i>12/18/2025 - Today I mainly focused on implementing KNN from scratch as well as looking into the scikit learn version, it is comparatively much easier to understand than Linear Regression.</i><br>
 <i>12/19/2025 - Mainly devlved into the implementation of Logisstic Regression.</i><br>
 <i>12/20/2025 - Today I implemented Kmeans akgorithm </i><br>
+<i>12/21/2025 - Implemented decision tree algoritihm from scratch and looked into scikit-learn implementation.</i><br>
+<i>12/22/2025 - Implemented random forest algiorithm from scratch and looked into the scikit-learn implementation!</i><br>
 # Project Repos:
 ## Starter Kit
 

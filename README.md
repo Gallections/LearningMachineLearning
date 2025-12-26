@@ -12,6 +12,7 @@ The notion of machine learning has been around for a while, yet my exposure to t
 <i>12/20/2025 - Today I implemented Kmeans akgorithm </i><br>
 <i>12/21/2025 - Implemented decision tree algoritihm from scratch and looked into scikit-learn implementation.</i><br>
 <i>12/22/2025 - Implemented random forest algiorithm from scratch and looked into the scikit-learn implementation!</i><br>
+<i>12/25/2025 - Finally completed the implementation of PCA, Merry Christmas!</i><br>
 # Project Repos:
 ## Starter Kit
 

@@ -14,6 +14,7 @@ The notion of machine learning has been around for a while, yet my exposure to t
 <i>12/22/2025 - Implemented random forest algiorithm from scratch and looked into the scikit-learn implementation!</i><br>
 <i>12/25/2025 - Finally completed the implementation of PCA, Merry Christmas!</i><br>
 <i>12/27/2025 - Implemented support vector machine </i><br>
+<i>12/29/2025 - Finally get over the Naive Bayes implementation, had an extremely hard time understanding the implementation. But I think I got the intution? Need some review some other time for sure. </i><br>
 # Project Repos:
 ## Starter Kit
 
